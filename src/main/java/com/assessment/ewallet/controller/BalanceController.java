@@ -26,11 +26,7 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
 
-    @Operation(summary = "Get loan record by user id", description = "Return loan record by specific user id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "400", description = "if loan record not exists")
-    })
+
     @GetMapping("balance")
     public ResponseEntity<ResponseDto<Long>> getCurrentBalance(){
         ResponseDto<Long> responseBalance = null;
