@@ -5,6 +5,9 @@ package com.assessment.ewallet.controller;
 import com.assessment.ewallet.dto.ResponseDto;
 import com.assessment.ewallet.entity.Balance;
 import com.assessment.ewallet.service.BalanceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,11 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
 
+    @Operation(summary = "Get loan record by user id", description = "Return loan record by specific user id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "if loan record not exists")
+    })
     @GetMapping("balance")
     public ResponseEntity<ResponseDto<Long>> getCurrentBalance(){
         ResponseDto<Long> responseBalance = null;
