@@ -11,22 +11,15 @@ import javax.sql.DataSource;
 @Configuration
 public class DatabaseConfiguration {
 
-    @Value("${spring.datasource.driver-class-name}")
-    private static String databaseDriver;
-    @Value("${spring.datasource.url}")
-    private static String databaseUrl;
-    @Value("${spring.datasource.username}")
-    private static String databaseUsername;
-    @Value("${spring.datasource.password}")
-    private static String databasePassword;
+
 
     @Bean
     public static DataSource source(){
         DataSourceBuilder<?> dsb = DataSourceBuilder.create();
-        dsb.driverClassName(databaseDriver);
-        dsb.url(databaseUrl);
-        dsb.username(databaseUsername);
-        dsb.password(databasePassword);
+        dsb.driverClassName("com.mysql.cj.jdbc.Driver");
+        dsb.url("jdbc:mysql://localhost:3306/e_wallet?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false");
+        dsb.username("root");
+        dsb.password("55555");
         return dsb.build();
     }
 }
