@@ -77,5 +77,6 @@ public class BalanceRepository {
             e.printStackTrace();
         }
 
+        return result;
     }
 }

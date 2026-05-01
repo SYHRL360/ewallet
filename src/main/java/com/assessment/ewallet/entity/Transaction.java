@@ -1,12 +1,15 @@
 package com.assessment.ewallet.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
 
     private String invoiceNumber;
