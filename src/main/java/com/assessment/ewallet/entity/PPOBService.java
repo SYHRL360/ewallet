@@ -1,10 +1,11 @@
 package com.assessment.ewallet.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class PPOBService {
 
     private String serviceCode;
@@ -13,7 +14,7 @@ public class PPOBService {
 
     private String serviceIcon;
 
-    private String serviceTariff;
+    private long serviceTariff;
 
 
 }
