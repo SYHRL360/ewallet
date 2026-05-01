@@ -2,12 +2,16 @@ package com.assessment.ewallet.repository;
 
 import com.assessment.ewallet.config.DatabaseConfiguration;
 import com.assessment.ewallet.entity.Transaction;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+@Repository
 public class TransactionRepository {
 
     public int insert(Transaction transactionParam) {

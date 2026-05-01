@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-    Transaction doTransaction(String serviceCode);
+    Transaction doTransaction(String serviceCode, String email);
 
     List<Transaction> getAllTransactionByOffset(int offset, int size);
 }
