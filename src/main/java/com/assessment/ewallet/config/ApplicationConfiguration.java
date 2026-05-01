@@ -10,9 +10,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Configuration
+//@Configuration
 public class ApplicationConfiguration {
-
+    /*
     private final UserRepository userRepository;
 
 
@@ -42,4 +42,5 @@ public class ApplicationConfiguration {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+     */
 }

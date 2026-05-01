@@ -4,7 +4,7 @@ import com.assessment.ewallet.entity.Balance;
 
 public interface BalanceService {
 
-    long topUpBalance(Balance balanceParam);
+    Long topUpBalance(Balance balanceParam);
 
     long selectCurrentBalanceByEmail(String email);
 }

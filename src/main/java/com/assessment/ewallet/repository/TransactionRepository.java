@@ -41,7 +41,7 @@ public class TransactionRepository {
         DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String selectAllTransactionSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction LIMIT ?, ?;";
+        String selectAllTransactionSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction LIMIT ?, ? ORDER BY create_on DESC;";
 
         List<Transaction> transactionList = new ArrayList<>();
         try {

@@ -6,7 +6,7 @@ import com.assessment.ewallet.repository.BalanceRepository;
 import com.assessment.ewallet.repository.TransactionRepository;
 import com.assessment.ewallet.service.BalanceService;
 import com.assessment.ewallet.util.DateUtil;
-import com.assessment.ewallet.util.NumberUtil;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +26,10 @@ public class BalanceServiceImpl implements BalanceService {
     }
 
     @Override
-    public long topUpBalance(Balance balanceParam) {
+    public Long topUpBalance(Balance balanceParam) {
 
         Transaction topUpTransaction = new Transaction();
-        topUpTransaction.setInvoiceNumber("INV" + DateUtil.getNowDateForTransaction() + "-" + NumberUtil.generate2Number());
+        topUpTransaction.setInvoiceNumber("INV" + DateUtil.getNowDateForTransaction() + "-" + RandomUtils.secure().randomInt(10, 99));
         topUpTransaction.setTransactionType("TOPUP");
         topUpTransaction.setDescription("Top Up Balance");
         topUpTransaction.setTotalAmount(balanceParam.getBalance());
@@ -44,13 +44,13 @@ public class BalanceServiceImpl implements BalanceService {
 
 
         currentBalance.setBalance(currentBalance.getBalance() + balanceParam.getBalance());
-        balanceRepository.updateBalance()
+        balanceRepository.updateBalance(currentBalance);
         return currentBalance.getBalance();
     }
 
     @Override
     public long selectCurrentBalanceByEmail(String email) {
         Balance currentBalance = balanceRepository.selectByEmail(email);
-        return currentBalance.getBalance();
+        return (currentBalance != null) ? currentBalance.getBalance() : 0;
     }
 }
