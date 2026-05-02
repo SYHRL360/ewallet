@@ -1,4 +1,4 @@
-package com.assessment.ewallet.jwt;
+package com.assessment.ewallet.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

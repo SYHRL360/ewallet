@@ -2,6 +2,7 @@ package com.assessment.ewallet.repository;
 
 import com.assessment.ewallet.config.DatabaseConfiguration;
 import com.assessment.ewallet.dto.ProfileDto;
+import com.assessment.ewallet.dto.RegisterDto;
 import com.assessment.ewallet.entity.User;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class UserRepository {
 
 
-    public int insert(User user) {
+    public int insert(RegisterDto registerDto) {
 
         DataSource dataSource = null;
         Connection connection = null;
@@ -28,10 +29,10 @@ public class UserRepository {
             dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(insertUserSQL);
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.setString(2, user.getFirstName());
-            preparedStatement.setString(3, user.getLastName());
-            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setString(1, registerDto.getEmail());
+            preparedStatement.setString(2, registerDto.getFirstName());
+            preparedStatement.setString(3, registerDto.getLastName());
+            preparedStatement.setString(4, registerDto.getPassword());
             result = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
