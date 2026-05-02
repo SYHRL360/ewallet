@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @Component
-public class Jwt {
+public class JwtService {
 
     private final String SECRET_KEY = "c430a5111b04d86c87fead04c37cdda017750e191b6a514a2125500f657bdc7b";
 
