@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Repository
 public class UserRepository {
@@ -38,7 +39,7 @@ public class UserRepository {
         return result;
     }
 
-    public User findByEmail(String emailParam) {
+    public Optional<User> findByEmail(String emailParam) {
         DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -62,8 +63,7 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return user;
+        return Optional.ofNullable(user);
     }
 
     public ProfileDto findProfileInfo(String emailParam) {
