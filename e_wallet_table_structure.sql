@@ -11,8 +11,7 @@ CREATE TABLE IF NOT EXISTS  `e_wallet`.`user` (
 CONSTRAINT user_email UNIQUE (email),
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-ALTER TABLE e_wallet.user
-ADD `profile_image` varchar(255) NOT NULL DEFAULT '' AFTER `password`;
+
 
 CREATE TABLE IF NOT EXISTS `e_wallet`.`banner` (
 `id` int NOT NULL AUTO_INCREMENT,
