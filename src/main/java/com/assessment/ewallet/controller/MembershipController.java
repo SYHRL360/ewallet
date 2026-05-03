@@ -60,7 +60,8 @@ public class MembershipController {
             }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseRegistration = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseRegistration, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,7 +87,8 @@ public class MembershipController {
             }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseRegistration = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseRegistration, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -107,7 +109,8 @@ public class MembershipController {
             }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseProfile = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseProfile, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -119,6 +122,10 @@ public class MembershipController {
             String emailUser = authentication.getName();
             ProfileDto updateUser = userService.updateFirstNameOrLastNameByEmail(updateProfileDto, emailUser);
 
+        } catch (Exception e) {
+            logger.error("Exception in MembershipController ", e);
+            responseUpdateProfile = new ResponseDto<>(500, "Exception error : "+ e.getMessage(), null);
+            return new ResponseEntity<>(responseUpdateProfile, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

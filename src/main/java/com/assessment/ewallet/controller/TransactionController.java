@@ -39,7 +39,8 @@ public class TransactionController {
             return new ResponseEntity<>(responseBalance, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Exception in TransactionController.getCurrentBalance ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseBalance = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseBalance, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -57,7 +58,8 @@ public class TransactionController {
             return new ResponseEntity<>(responseTopUp, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Exception in TransactionController.topUpBalance ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseTopUp = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseTopUp, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -73,7 +75,8 @@ public class TransactionController {
             }
         } catch (Exception e) {
             logger.error("Exception in TransactionController.transaction ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseTransaction = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseTransaction, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -93,7 +96,8 @@ public class TransactionController {
             }
         } catch (Exception e) {
             logger.error("Exception in TransactionController.history ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseHistory = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseHistory, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -43,7 +43,8 @@ public class InformationController {
             }
         } catch (Exception e) {
             logger.error("Exception in InformationController.banner ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseBanner = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseBanner, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -61,7 +62,8 @@ public class InformationController {
             }
         } catch (Exception e) {
             logger.error("Exception in InformationController.services ", e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            responsePPOBService = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responsePPOBService, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
