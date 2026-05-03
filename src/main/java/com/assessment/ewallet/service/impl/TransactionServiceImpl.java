@@ -15,6 +15,8 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +52,11 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         Transaction paymentTransaction = new Transaction();
-        paymentTransaction.setInvoiceNumber("INV" + DateUtil.getNowDateForTransaction() + "-" + RandomUtils.secure().randomInt(10, 99));
+        paymentTransaction.setInvoiceNumber("INV" + DateUtil.getNowDateForTransaction() + "-" + RandomUtils.secure().randomInt(1000, 9999));
         paymentTransaction.setTransactionType("PAYMENT");
         paymentTransaction.setDescription(availablePPOB.getServiceName());
         paymentTransaction.setTotalAmount(availablePPOB.getServiceTariff());
-        paymentTransaction.setCreatedOn(new Date(DateUtil.getTimeNowLongFormat()));
+        paymentTransaction.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
         transactionRepository.insert(paymentTransaction);
         // update balance
         currentBalance.setEmail(email);

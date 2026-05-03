@@ -29,7 +29,7 @@ public class TransactionRepository {
             preparedStatement.setString(2, transactionParam.getTransactionType());
             preparedStatement.setString(3, transactionParam.getDescription());
             preparedStatement.setLong(4, transactionParam.getTotalAmount());
-            preparedStatement.setDate(5, transactionParam.getCreatedOn());
+            preparedStatement.setTimestamp(5, transactionParam.getCreatedOn());
             result = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class TransactionRepository {
         DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String selectAllTransactionSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction LIMIT ?, ? ORDER BY create_on DESC;";
+        String selectAllTransactionSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction ORDER BY create_on DESC LIMIT ?, ?;";
 
         List<Transaction> transactionList = new ArrayList<>();
         try {
@@ -56,7 +56,7 @@ public class TransactionRepository {
                 String transactionType = rs.getString("transaction_type");
                 String description = rs.getString("description");
                 long totalAmount = rs.getLong("total_amount");
-                Date createOn = rs.getDate("create_on");
+                Timestamp createOn = rs.getTimestamp("create_on");
                 transactionList.add(new Transaction(invoiceNumber, transactionType, description, totalAmount, createOn));
             }
         } catch (SQLException e) {

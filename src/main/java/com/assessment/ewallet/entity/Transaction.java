@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 
 @Data
@@ -16,6 +17,6 @@ public class Transaction {
     private String transactionType;
     private String description;
     private long totalAmount;
-    private Date createdOn;
+    private Timestamp createdOn;
 
 }

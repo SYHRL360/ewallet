@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 public class BalanceServiceImpl implements BalanceService {
@@ -29,11 +31,11 @@ public class BalanceServiceImpl implements BalanceService {
     public Long topUpBalance(Balance balanceParam) {
 
         Transaction topUpTransaction = new Transaction();
-        topUpTransaction.setInvoiceNumber("INV" + DateUtil.getNowDateForTransaction() + "-" + RandomUtils.secure().randomInt(10, 99));
+        topUpTransaction.setInvoiceNumber("INV" + DateUtil.getNowDateForTransaction() + "-" + RandomUtils.secure().randomInt(1000, 9999));
         topUpTransaction.setTransactionType("TOPUP");
         topUpTransaction.setDescription("Top Up Balance");
         topUpTransaction.setTotalAmount(balanceParam.getBalance());
-        topUpTransaction.setCreatedOn(new Date(DateUtil.getTimeNowLongFormat()));
+        topUpTransaction.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
         transactionRepository.insert(topUpTransaction);
 
         Balance currentBalance = balanceRepository.selectByEmail(balanceParam.getEmail());
