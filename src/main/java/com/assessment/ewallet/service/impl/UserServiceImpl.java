@@ -1,8 +1,6 @@
 package com.assessment.ewallet.service.impl;
 
-import com.assessment.ewallet.dto.LoginDto;
-import com.assessment.ewallet.dto.RegisterDto;
-import com.assessment.ewallet.dto.ResponseDto;
+import com.assessment.ewallet.dto.*;
 import com.assessment.ewallet.entity.User;
 import com.assessment.ewallet.repository.UserRepository;
 import com.assessment.ewallet.service.JwtService;
@@ -47,16 +45,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ProfileDto selectUserByEmail(String email) {
+        return userRepository.findProfileInfo(email);
+    }
+
+    @Override
     public ResponseDto<String> loginUser(LoginDto loginDto) {
         String token = "";
         try{
             User authenticatedUser = authenticate(loginDto);
 
             token = jwtService.generateToken(authenticatedUser);
+
         } catch (UsernameNotFoundException e) {
             return new ResponseDto<>(103, "Username atau password salah", null);
         }
+
         return new ResponseDto<>(0, "Login Sukses", token);
+    }
+
+    @Override
+    public ProfileDto updateFirstNameOrLastNameByEmail(UpdateProfileDto updateProfileDto, String email) {
+
+
+
+        ProfileDto updateProfile = new ProfileDto();
+        updateProfile.setFirstName(updateProfile.getFirstName());
+        updateProfile.setLastName(updateProfile.getLastName());
+        updateProfile.setEmail(email);
+
+        return userRepository.updateProfileName(updateProfile);
     }
 
     private User authenticate(LoginDto loginUser) {

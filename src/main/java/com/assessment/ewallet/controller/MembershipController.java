@@ -97,8 +97,14 @@ public class MembershipController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             User currentUser = (User) authentication.getPrincipal();
-            responseProfile = new ResponseDto<>(0, "Sukses", new ProfileDto(currentUser.getEmail(), currentUser.getFirstName(), currentUser.getLastName(), ""));
-            return new ResponseEntity<>(responseProfile, HttpStatus.OK);
+            ProfileDto userProfile = userService.selectUserByEmail(currentUser.getEmail());
+            if (userProfile != null) {
+                responseProfile = new ResponseDto<>(0, "Sukses", userProfile);
+                return new ResponseEntity<>(responseProfile, HttpStatus.OK);
+            } else {
+                responseProfile = new ResponseDto<>(102, "Data user profile tidak ditemukan", null);
+                return new ResponseEntity<>(responseProfile, HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -111,6 +117,7 @@ public class MembershipController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String emailUser = authentication.getName();
+            ProfileDto updateUser = userService.updateFirstNameOrLastNameByEmail(updateProfileDto, emailUser);
 
         }
     }

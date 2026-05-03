@@ -1,9 +1,6 @@
 package com.assessment.ewallet.service;
 
-import com.assessment.ewallet.dto.LoginDto;
-import com.assessment.ewallet.dto.RegisterDto;
-import com.assessment.ewallet.dto.ResponseDto;
-import com.assessment.ewallet.entity.User;
+import com.assessment.ewallet.dto.*;
 
 public interface UserService {
 
@@ -12,5 +9,9 @@ public interface UserService {
     boolean registerNewUser(RegisterDto registerDto);
 
 
+    ProfileDto selectUserByEmail(String email);
+
     ResponseDto<String> loginUser(LoginDto loginDto);
+
+    ProfileDto updateFirstNameOrLastNameByEmail(UpdateProfileDto updateProfileDto, String email);
 }
