@@ -5,11 +5,18 @@ import com.assessment.ewallet.entity.User;
 import com.assessment.ewallet.repository.UserRepository;
 import com.assessment.ewallet.service.JwtService;
 import com.assessment.ewallet.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -65,16 +72,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ProfileDto updateFirstNameOrLastNameByEmail(UpdateProfileDto updateProfileDto, String email) {
+    public ProfileDto updateFirstNameOrLastNameByEmail(UpdateProfileDto newUpdateProfileDto, String email) {
 
+        ProfileDto updateProfile = selectUserByEmail(email);
 
+        updateProfile.setFirstName(StringUtils.isNotEmpty(newUpdateProfileDto.getFirstName()) ? newUpdateProfileDto.getFirstName() : updateProfile.getFirstName());
+        updateProfile.setLastName(StringUtils.isNotEmpty(newUpdateProfileDto.getLastName()) ? newUpdateProfileDto.getLastName() : updateProfile.getLastName());
 
-        ProfileDto updateProfile = new ProfileDto();
-        updateProfile.setFirstName(updateProfile.getFirstName());
-        updateProfile.setLastName(updateProfile.getLastName());
-        updateProfile.setEmail(email);
+        return userRepository.updateProfileName(updateProfile) > 0 ? updateProfile : null ;
+    }
 
-        return userRepository.updateProfileName(updateProfile);
+    @Override
+    public ProfileDto uploadProfileImage(MultipartFile file, String email) throws Exception {
+        String uploadDir = "/uploads";
+        Path path = Paths.get(uploadDir, file.getOriginalFilename());
+        // Create directory 'uploads' if not exits
+        Files.createDirectories(path.getParent());
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        String uploadedImagePath = path.toString();
+
+        ProfileDto updateProfile = selectUserByEmail(email);
+        updateProfile.setProfileImage(uploadedImagePath);
+
+        return userRepository.updateProfileImage(updateProfile) > 0 ? updateProfile : null;
     }
 
     private User authenticate(LoginDto loginUser) {

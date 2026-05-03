@@ -1,9 +1,11 @@
 package com.assessment.ewallet.controller;
 
+import com.assessment.ewallet.dto.ProfileDto;
 import com.assessment.ewallet.dto.ResponseDto;
 import com.assessment.ewallet.dto.TransactionHistoryDto;
 import com.assessment.ewallet.entity.Balance;
 import com.assessment.ewallet.entity.Transaction;
+import com.assessment.ewallet.entity.User;
 import com.assessment.ewallet.service.BalanceService;
 import com.assessment.ewallet.service.TransactionService;
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +37,12 @@ public class TransactionController {
     @GetMapping("balance")
     public ResponseEntity<ResponseDto<Long>> getCurrentBalance(){
         ResponseDto<Long> responseBalance = null;
+
         try {
-            Long currentBalance = balanceService.selectCurrentBalanceByEmail("");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+
+            Long currentBalance = balanceService.selectCurrentBalanceByEmail(currentUser.getEmail());
             responseBalance = new ResponseDto<>(0, "Get balance berhasil", currentBalance);
             return new ResponseEntity<>(responseBalance, HttpStatus.OK);
         } catch (Exception e) {
@@ -52,7 +60,10 @@ public class TransactionController {
             return new ResponseEntity<>(responseTopUp, HttpStatus.BAD_REQUEST);
         }
         try {
-            Balance balanceParam = new Balance("", topUpAmount);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String emailUser = authentication.getName();
+
+            Balance balanceParam = new Balance(emailUser, topUpAmount);
             Long currentBalance = balanceService.topUpBalance(balanceParam);
             responseTopUp = new ResponseDto<>(0, "Top Up Balance berhasil", currentBalance);
             return new ResponseEntity<>(responseTopUp, HttpStatus.OK);
@@ -67,7 +78,10 @@ public class TransactionController {
     public ResponseEntity<ResponseDto<Transaction>> doTransaction(@RequestBody String serviceCode) {
         ResponseDto<Transaction> responseTransaction = null;
         try {
-            responseTransaction = transactionService.doTransaction(serviceCode, "");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String emailUser = authentication.getName();
+
+            responseTransaction = transactionService.doTransaction(serviceCode, emailUser);
             if (responseTransaction.getStatus() == 102 || responseTransaction.getStatus() == 103) {
                 return new ResponseEntity<>(responseTransaction, HttpStatus.BAD_REQUEST);
             } else {

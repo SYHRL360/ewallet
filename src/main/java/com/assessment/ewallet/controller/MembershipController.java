@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/")
@@ -56,7 +57,7 @@ public class MembershipController {
                 return new ResponseEntity<>(responseRegistration, HttpStatus.OK);
             } else {
                 responseRegistration = new ResponseDto<>(102, "Gagal melakukan registrasi", null);
-                return new ResponseEntity<>(responseRegistration, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(responseRegistration, HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);
@@ -121,11 +122,44 @@ public class MembershipController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String emailUser = authentication.getName();
             ProfileDto updateUser = userService.updateFirstNameOrLastNameByEmail(updateProfileDto, emailUser);
-
+            if (updateUser != null) {
+                responseUpdateProfile = new ResponseDto<>(0, "Sukses", updateUser);
+                return new ResponseEntity<>(responseUpdateProfile, HttpStatus.OK);
+            } else {
+                responseUpdateProfile = new ResponseDto<>(102, "Gagal melakukan update profile", null);
+                return new ResponseEntity<>(responseUpdateProfile, HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);
             responseUpdateProfile = new ResponseDto<>(500, "Exception error : "+ e.getMessage(), null);
             return new ResponseEntity<>(responseUpdateProfile, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("profile/image")
+    public ResponseEntity<ResponseDto<ProfileDto>> imageProfile(@RequestParam("file")MultipartFile file) {
+        ResponseDto<ProfileDto> responseImageProfile = null;
+
+        if (!file.getOriginalFilename().endsWith("jpeg") || !file.getOriginalFilename().endsWith("png")) {
+            responseImageProfile = new ResponseDto<>(102, "Format Image tidak sesuai, Format Image yang boleh di upload hanya jpeg dan png", null);
+            return new ResponseEntity<>(responseImageProfile, HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String emailUser = authentication.getName();
+            ProfileDto imageProfile = userService.uploadProfileImage(file, emailUser);
+            if (imageProfile != null) {
+                responseImageProfile = new ResponseDto<>(0, "Update Profile Image berhasil", imageProfile);
+                return new ResponseEntity<>(responseImageProfile, HttpStatus.OK);
+            } else {
+                responseImageProfile = new ResponseDto<>(102, "Gagal melakukan update image profile", null);
+                return new ResponseEntity<>(responseImageProfile, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            logger.error("Exception in MembershipController ", e);
+            responseImageProfile = new ResponseDto<>(500, "Exception error : " + e.getMessage(), null);
+            return new ResponseEntity<>(responseImageProfile, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
