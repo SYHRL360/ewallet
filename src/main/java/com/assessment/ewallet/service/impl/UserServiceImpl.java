@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         newUser.setFirstName(registerDto.getFirstName());
         newUser.setLastName(registerDto.getLastName());
         newUser.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        return  userRepository.insert(registerDto) > 0;
+        return  userRepository.insert(newUser) > 0;
     }
 
     @Override

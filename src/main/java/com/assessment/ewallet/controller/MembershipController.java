@@ -8,12 +8,16 @@ import com.assessment.ewallet.util.RegexUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -136,11 +140,12 @@ public class MembershipController {
         }
     }
 
-    @PutMapping("profile/image")
+    @PutMapping(value = "profile/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDto<ProfileDto>> imageProfile(@RequestParam("file")MultipartFile file) {
         ResponseDto<ProfileDto> responseImageProfile = null;
-
-        if (!file.getOriginalFilename().endsWith("jpeg") || !file.getOriginalFilename().endsWith("png")) {
+        List<String> allowedExtentions = Arrays.asList("jpeg", "png");
+        String fileExtention = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        if (!allowedExtentions.contains(fileExtention)) {
             responseImageProfile = new ResponseDto<>(102, "Format Image tidak sesuai, Format Image yang boleh di upload hanya jpeg dan png", null);
             return new ResponseEntity<>(responseImageProfile, HttpStatus.BAD_REQUEST);
         }
