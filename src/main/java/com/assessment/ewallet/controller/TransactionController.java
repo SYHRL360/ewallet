@@ -1,8 +1,6 @@
 package com.assessment.ewallet.controller;
 
-import com.assessment.ewallet.dto.ProfileDto;
-import com.assessment.ewallet.dto.ResponseDto;
-import com.assessment.ewallet.dto.TransactionHistoryDto;
+import com.assessment.ewallet.dto.*;
 import com.assessment.ewallet.entity.Balance;
 import com.assessment.ewallet.entity.Transaction;
 import com.assessment.ewallet.entity.User;
@@ -18,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -53,9 +52,9 @@ public class TransactionController {
     }
 
     @PostMapping("topup")
-    public ResponseEntity<ResponseDto<Long>> topUpBalance(@RequestBody Long topUpAmount) {
+    public ResponseEntity<ResponseDto<Long>> topUpBalance(@RequestBody TopUpDto topUpDto) {
         ResponseDto<Long> responseTopUp = null;
-        if (topUpAmount < 0) {
+        if (topUpDto.getTopUpAmount() < 0) {
             responseTopUp = new ResponseDto<>(102, "Parameter amount hanya boleh angka dan tidak boleh kecil dari 0", null);
             return new ResponseEntity<>(responseTopUp, HttpStatus.BAD_REQUEST);
         }
@@ -63,7 +62,7 @@ public class TransactionController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String emailUser = authentication.getName();
 
-            Balance balanceParam = new Balance(emailUser, topUpAmount);
+            Balance balanceParam = new Balance(emailUser, topUpDto.getTopUpAmount());
             Long currentBalance = balanceService.topUpBalance(balanceParam);
             responseTopUp = new ResponseDto<>(0, "Top Up Balance berhasil", currentBalance);
             return new ResponseEntity<>(responseTopUp, HttpStatus.OK);
@@ -75,13 +74,14 @@ public class TransactionController {
     }
 
     @PostMapping("transaction")
-    public ResponseEntity<ResponseDto<Transaction>> doTransaction(@RequestBody String serviceCode) {
+    public ResponseEntity<ResponseDto<Transaction>> doTransaction(@RequestBody TransactionDto transactionDto) {
         ResponseDto<Transaction> responseTransaction = null;
+
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String emailUser = authentication.getName();
 
-            responseTransaction = transactionService.doTransaction(serviceCode, emailUser);
+            responseTransaction = transactionService.doTransaction(transactionDto.getServiceCode(), emailUser);
             if (responseTransaction.getStatus() == 102 || responseTransaction.getStatus() == 103) {
                 return new ResponseEntity<>(responseTransaction, HttpStatus.BAD_REQUEST);
             } else {
