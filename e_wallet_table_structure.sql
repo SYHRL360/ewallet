@@ -6,10 +6,13 @@ CREATE TABLE IF NOT EXISTS  `e_wallet`.`user` (
 `email` varchar(100) NOT NULL,
 `first_name` varchar(50) DEFAULT NULL,
 `last_name` varchar(50) DEFAULT NULL,
-`password` varchar(255) NOT NULL,
+`password` varchar(255) DEFAULT NULL,
+`profile_image` varchar(255) NOT NULL DEFAULT '',
 CONSTRAINT user_email UNIQUE (email),
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE e_wallet.user
+ADD `profile_image` varchar(255) NOT NULL DEFAULT '' AFTER `password`;
 
 CREATE TABLE IF NOT EXISTS `e_wallet`.`banner` (
 `id` int NOT NULL AUTO_INCREMENT,
