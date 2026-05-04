@@ -13,15 +13,20 @@ import java.sql.SQLException;
 @Repository
 public class BalanceRepository {
 
+
+    private final DataSource dataSource;
+
+    public BalanceRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public int insert(Balance balanceParam) {
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String insertBalanceSQL = "INSERT INTO balance (email, balance) VALUES (?, ?);";
 
         int result = 0;
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(insertBalanceSQL);
             preparedStatement.setString(1, balanceParam.getEmail());
@@ -34,14 +39,12 @@ public class BalanceRepository {
     }
 
     public Balance selectByEmail(String emailParam) {
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String selectByEmail = "SELECT id, email, balance FROM balance WHERE email = ?;";
 
         Balance balanceDto = null;
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(selectByEmail);
             preparedStatement.setString(1, emailParam);
@@ -60,13 +63,13 @@ public class BalanceRepository {
     }
 
     public int updateBalance(Balance balanceParam) {
-        DataSource dataSource = null;
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String updateBalanceSQL = "UPDATE balance SET balance = ? WHERE email = ?;";
         int result = 0;
         try {
-            dataSource = DatabaseConfiguration.source();
+
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(updateBalanceSQL);
             preparedStatement.setLong(1, balanceParam.getBalance());

@@ -16,17 +16,20 @@ import java.util.Optional;
 @Repository
 public class UserRepository {
 
+    private final DataSource dataSource;
+
+    public UserRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public int insert(RegisterDto registerDto) {
 
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String insertUserSQL = "INSERT INTO user (email, first_name, last_name, password) VALUES (?, ?, ?, ?);";
 
         int result = 0;
         try  {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(insertUserSQL);
             preparedStatement.setString(1, registerDto.getEmail());
@@ -41,14 +44,12 @@ public class UserRepository {
     }
 
     public Optional<User> findByEmail(String emailParam) {
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String findByEmailSQL = "SELECT email, first_name, last_name, password FROM user WHERE email = ?;";
 
         User user = null;
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(findByEmailSQL);
             preparedStatement.setString(1, emailParam);
@@ -68,14 +69,12 @@ public class UserRepository {
     }
 
     public ProfileDto findProfileInfo(String emailParam) {
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String findByEmailSQL = "SELECT email, first_name, last_name, profile_image FROM user WHERE email = ?;";
 
         ProfileDto profileDto = null;
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(findByEmailSQL);
             preparedStatement.setString(1, emailParam);
@@ -97,13 +96,11 @@ public class UserRepository {
 
 
     public int updateProfileName(ProfileDto profileDto) {
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String updateProfileSql = "UPDATE user SET first_name = ?, last_name = ? WHERE email = ?;";
         int result = 0;
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(updateProfileSql);
             preparedStatement.setString(1, profileDto.getFirstName());
@@ -120,13 +117,11 @@ public class UserRepository {
     }
 
     public int updateProfileImage(ProfileDto profileDto) {
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String updateImageUrl = "UPDATE user SET profile_image = ? WHERE email = ?;";
         int result = 0;
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(updateImageUrl);
             preparedStatement.setString(1, profileDto.getProfileImage());

@@ -16,15 +16,21 @@ import java.util.List;
 public class PPOBServiceRepository {
 
 
+    private final DataSource dataSource;
+
+    public PPOBServiceRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public PPOBService selectByServiceCode(String serviceCodeParam) {
-        DataSource dataSource = null;
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String selectByServiceCodeSQL = "SELECT service_code, service_name, service_icon, service_tariff FROM ppob_service WHERE service_code = ?;";
 
         PPOBService ppobService = null;
         try {
-            dataSource = DatabaseConfiguration.source();
+
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(selectByServiceCodeSQL);
             preparedStatement.setString(1, serviceCodeParam);
@@ -45,14 +51,12 @@ public class PPOBServiceRepository {
 
     public List<PPOBService> selectAllPPOBService() {
 
-        DataSource dataSource = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String selectAllPPOBServiceSQL = "SELECT service_code, service_name, service_icon, service_tariff FROM ppob_service;";
 
         List<PPOBService> ppobServicesList = new ArrayList<>();
         try {
-            dataSource = DatabaseConfiguration.source();
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(selectAllPPOBServiceSQL);
             ResultSet rs = preparedStatement.executeQuery();

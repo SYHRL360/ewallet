@@ -15,15 +15,21 @@ import java.util.List;
 @Repository
 public class BannerRepository {
 
+    private final DataSource dataSource;
+
+    public BannerRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public List<Banner> selectAllBanner() {
-        DataSource dataSource = null;
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         String selectAllBannerSQL = "SELECT banner_name, banner_image, description FROM banner;";
 
         List<Banner> banners = new ArrayList<>();
         try {
-            dataSource = DatabaseConfiguration.source();
+
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(selectAllBannerSQL);
             ResultSet rs = preparedStatement.executeQuery();
