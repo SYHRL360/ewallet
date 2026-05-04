@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
         paymentTransaction.setTransactionType("PAYMENT");
         paymentTransaction.setDescription(availablePPOB.getServiceName());
         paymentTransaction.setTotalAmount(availablePPOB.getServiceTariff());
-        paymentTransaction.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
+        paymentTransaction.setCreatedOn(DateUtil.getLocalDateTime());
         transactionRepository.insert(paymentTransaction);
         // update balance
         currentBalance.setEmail(email);

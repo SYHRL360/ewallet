@@ -7,6 +7,7 @@ import com.assessment.ewallet.service.JwtService;
 import com.assessment.ewallet.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
             token = jwtService.generateToken(authenticatedUser);
 
-        } catch (UsernameNotFoundException e) {
+        } catch (UsernameNotFoundException | BadCredentialsException e ) {
             return new ResponseDto<>(103, "Username atau password salah", null);
         }
 
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
         // Create directory 'uploads' if not exits
         Files.createDirectories(path.getParent());
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        String uploadedImagePath = path.toString();
+        String uploadedImagePath = path.getFileName().toString();
 
         ProfileDto updateProfile = selectUserByEmail(email);
         updateProfile.setProfileImage(uploadedImagePath);

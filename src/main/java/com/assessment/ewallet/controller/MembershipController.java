@@ -88,7 +88,7 @@ public class MembershipController {
             if (responseRegistration.getStatus() == 0) {
                 return new ResponseEntity<>(responseRegistration, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(responseRegistration, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(responseRegistration, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             logger.error("Exception in MembershipController ", e);

@@ -24,7 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ResponseDto<String> responseDto = null;
         ResponseEntity<ResponseDto<String>> responseEntity = null;
 
-        exception.printStackTrace();
+
 
         if (exception instanceof BadCredentialsException) {
             responseDto = new ResponseDto<>(103, "Username atau password salah", null);

@@ -35,7 +35,7 @@ public class BalanceServiceImpl implements BalanceService {
         topUpTransaction.setTransactionType("TOPUP");
         topUpTransaction.setDescription("Top Up Balance");
         topUpTransaction.setTotalAmount(balanceParam.getBalance());
-        topUpTransaction.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
+        topUpTransaction.setCreatedOn(DateUtil.getLocalDateTime());
         transactionRepository.insert(topUpTransaction);
 
         Balance currentBalance = balanceRepository.selectByEmail(balanceParam.getEmail());

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -17,6 +18,6 @@ public class Transaction {
     private String transactionType;
     private String description;
     private long totalAmount;
-    private Timestamp createdOn;
+    private LocalDateTime createdOn;
 
 }
