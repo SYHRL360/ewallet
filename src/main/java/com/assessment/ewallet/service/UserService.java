@@ -3,6 +3,8 @@ package com.assessment.ewallet.service;
 import com.assessment.ewallet.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 public interface UserService {
 
 
@@ -14,7 +16,7 @@ public interface UserService {
 
     ProfileDto selectUserByEmail(String email);
 
-    ResponseDto<String> loginUser(LoginDto loginDto);
+    ResponseDto<Map<String,String>> loginUser(LoginDto loginDto);
 
     ProfileDto updateFirstNameOrLastNameByEmail(UpdateProfileDto newUpdateProfileDto, String email);
 

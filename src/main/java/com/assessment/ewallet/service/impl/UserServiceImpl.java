@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -58,18 +60,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDto<String> loginUser(LoginDto loginDto) {
-        String token = "";
+    public ResponseDto<Map<String, String>> loginUser(LoginDto loginDto) {
+
+        Map<String, String> tokenMap = new HashMap<>();
         try{
             User authenticatedUser = authenticate(loginDto);
 
-            token = jwtService.generateToken(authenticatedUser);
-
+            String str = jwtService.generateToken(authenticatedUser);
+            tokenMap.put("token", str);
         } catch (UsernameNotFoundException | BadCredentialsException e ) {
             return new ResponseDto<>(103, "Username atau password salah", null);
         }
 
-        return new ResponseDto<>(0, "Login Sukses", token);
+        return new ResponseDto<>(0, "Login Sukses", tokenMap);
     }
 
     @Override

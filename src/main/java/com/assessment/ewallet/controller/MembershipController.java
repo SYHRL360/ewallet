@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -71,8 +72,8 @@ public class MembershipController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<ResponseDto<String>> login(@RequestBody LoginDto loginDto) {
-        ResponseDto<String> responseRegistration = null;
+    public ResponseEntity<ResponseDto<Map<String,String>>> login(@RequestBody LoginDto loginDto) {
+        ResponseDto<Map<String,String>> responseRegistration = null;
 
         if (!RegexUtil.validateEmail(loginDto.getEmail())) {
             responseRegistration = new ResponseDto<>(102, "Paramter email tidak sesuai format", null);
