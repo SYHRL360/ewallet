@@ -14,9 +14,6 @@ import com.assessment.ewallet.util.DateUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,13 +63,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionHistoryDto getAllTransactionByOffset(int offset, int size) {
+    public TransactionHistoryDto getAllTransactionByOffset(Integer offset, Integer size) {
 
         List<Transaction> transactionList = new ArrayList<>();
-        transactionList = transactionRepository.selectAllTransactionOffset(offset, size);
+        if (offset != null && size != null ){
+            transactionList = transactionRepository.selectAllTransactionOffset(offset, size);
+        } else {
+            transactionList = transactionRepository.selectAllTransaction();
+        }
         TransactionHistoryDto transactionHistoryDto = new TransactionHistoryDto();
-        transactionHistoryDto.setOffset(String.valueOf(offset));
-        transactionHistoryDto.setLimit(String.valueOf(size));
+        transactionHistoryDto.setOffset(offset != null ? String.valueOf(offset) : "");
+        transactionHistoryDto.setLimit(size != null ? String.valueOf(size) : "");
         transactionHistoryDto.setRecord(transactionList);
         return transactionHistoryDto;
     }

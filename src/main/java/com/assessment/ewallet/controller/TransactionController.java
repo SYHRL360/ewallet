@@ -98,7 +98,7 @@ public class TransactionController {
 
 
 
-    @GetMapping("history")
+    @GetMapping("transaction/history")
     public ResponseEntity<ResponseDto<TransactionHistoryDto>> transactionHistory(@RequestParam(required = false) Integer offset, @RequestParam(required = false) Integer limit) {
         ResponseDto<TransactionHistoryDto> responseHistory = null;
         try {

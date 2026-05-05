@@ -48,12 +48,12 @@ public class TransactionRepository {
     public List<Transaction> selectAllTransactionOffset(int offset, int size) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        String selectAllTransactionSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction ORDER BY create_on DESC LIMIT ?, ?;";
+        String selectAllTransactionOffsetSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction ORDER BY create_on DESC LIMIT ?, ?;";
 
         List<Transaction> transactionList = new ArrayList<>();
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(selectAllTransactionSQL);
+            preparedStatement = connection.prepareStatement(selectAllTransactionOffsetSQL);
             preparedStatement.setInt(1, offset);
             preparedStatement.setInt(2, size);
             ResultSet rs = preparedStatement.executeQuery();
@@ -72,6 +72,30 @@ public class TransactionRepository {
         return transactionList;
     }
 
+    public List<Transaction> selectAllTransaction() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String selectAllTransactionSQL = "SELECT invoice_number, transaction_type, description, total_amount, create_on FROM transaction ORDER BY create_on DESC;";
+
+        List<Transaction> transactionList = new ArrayList<>();
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(selectAllTransactionSQL);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String invoiceNumber = rs.getString("invoice_number");
+                String transactionType = rs.getString("transaction_type");
+                String description = rs.getString("description");
+                long totalAmount = rs.getLong("total_amount");
+                LocalDateTime createOn = rs.getObject("create_on", LocalDateTime.class);
+                transactionList.add(new Transaction(invoiceNumber, transactionType, description, totalAmount, createOn));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactionList;
+    }
 
 
 
