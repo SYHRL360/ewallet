@@ -6,6 +6,7 @@ import com.assessment.ewallet.entity.Transaction;
 import com.assessment.ewallet.entity.User;
 import com.assessment.ewallet.service.BalanceService;
 import com.assessment.ewallet.service.TransactionService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -73,6 +74,7 @@ public class TransactionController {
         }
     }
 
+    @Operation(description = "Input serviceCode yang tersedia : (PAJAK, PLN, PDAM, PULSA, PGN, MUSIK, TV, PAKET_DATA, VOUCHER_GAME, VOUCHER_MAKAN, QURBAN, ZAKAT)")
     @PostMapping("transaction")
     public ResponseEntity<ResponseDto<Transaction>> doTransaction(@RequestBody TransactionDto transactionDto) {
         ResponseDto<Transaction> responseTransaction = null;
