@@ -5,6 +5,8 @@ import com.assessment.ewallet.entity.Banner;
 import com.assessment.ewallet.entity.PPOBService;
 import com.assessment.ewallet.service.BannerService;
 import com.assessment.ewallet.service.PPOBServiceService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/")
+@Tag( name = "2. Module Information")
 public class InformationController {
     private final Logger logger = LoggerFactory.getLogger(InformationController.class);
 
@@ -30,6 +33,7 @@ public class InformationController {
     }
 
     @GetMapping("banner")
+    @SecurityRequirements
     public ResponseEntity<ResponseDto<List<Banner>>> getAllBanner() {
         ResponseDto<List<Banner>> responseBanner = null;
         try {

@@ -5,6 +5,8 @@ import com.assessment.ewallet.entity.User;
 import com.assessment.ewallet.service.JwtService;
 import com.assessment.ewallet.service.UserService;
 import com.assessment.ewallet.util.RegexUtil;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/")
+@Tag(name = "1. Module Membership")
 public class MembershipController {
 
 
@@ -41,6 +44,7 @@ public class MembershipController {
     }
 
     @PostMapping("registration")
+    @SecurityRequirements
     public ResponseEntity<ResponseDto<String>> registration(@RequestBody RegisterDto registerDto) {
         ResponseDto<String> responseRegistration = null;
 
@@ -72,6 +76,7 @@ public class MembershipController {
     }
 
     @PostMapping("login")
+    @SecurityRequirements
     public ResponseEntity<ResponseDto<Map<String,String>>> login(@RequestBody LoginDto loginDto) {
         ResponseDto<Map<String,String>> responseRegistration = null;
 

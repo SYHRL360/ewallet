@@ -7,6 +7,7 @@ import com.assessment.ewallet.entity.User;
 import com.assessment.ewallet.service.BalanceService;
 import com.assessment.ewallet.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/")
+@Tag(name = "3. Module Transaction")
 public class TransactionController {
 
     private final Logger logger = LoggerFactory.getLogger(TransactionController.class);
